@@ -128,7 +128,7 @@ Saving encrypted file...
 
 ### Example 2: Small File Encryption (<10KB)
 ```bash
-pixelcrypt -e -i icon.png -o encrypted.bin -k "mysecretkey123"
+pixelcrypt -e -i input.png -o encrypted.bin -k "mysecretkey123"
 ```
 Output:
 ```

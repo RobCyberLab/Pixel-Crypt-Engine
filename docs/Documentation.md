@@ -106,7 +106,7 @@ function showStats(originalSize, compressedSize) {
 
 ### Example 1: Large File Encryption (>10KB)
 ```bash
-pixelcrypt -e -i large-photo.jpg -o encrypted.bin -k "mysecretkey123"
+pixelcrypt -e -i input.jpg -o encrypted.bin -k "mysecretkey123"
 ```
 Output:
 ```

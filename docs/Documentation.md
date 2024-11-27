@@ -8,19 +8,19 @@
 5. [Examples](#examples)
 
 ## Project Overview📝
-ImageCrypt is a Node.js-based command-line tool that provides secure image encryption and decryption capabilities. It uses AES-256-CTR encryption combined with optional GZIP compression to securely store and transfer image files. The tool features progress tracking, compression statistics, and a user-friendly CLI interface.
+Pixel Crypt Engine is a Node.js-based command-line tool that provides secure image encryption and decryption capabilities. It uses AES-256-CTR encryption combined with smart GZIP compression (for files >10KB) to securely store and transfer image files. The tool features progress tracking, compression statistics, and a user-friendly CLI interface.
 
 ## Installation⚙️
-To install and use ImageCrypt, follow these steps:
+To install and use Pixel Crypt Engine:
 
-1. Clone the project repository:
+1. Clone the repository:
 ```bash
-git clone https://github.com/RobCyberLab/imagecrypt.git
+git clone https://github.com/yourusername/pixel-crypt-engine.git
 ```
 
-2. Navigate to the project directory:
+2. Navigate to directory:
 ```bash
-cd imagecrypt
+cd pixel-crypt-engine
 ```
 
 3. Install dependencies:
@@ -28,24 +28,24 @@ cd imagecrypt
 npm install
 ```
 
-4. Make the CLI executable:
+4. Make CLI executable:
 ```bash
 chmod +x index.js
 ```
 
 ## Usage📖
-ImageCrypt provides two main operations:
+The engine provides two main operations:
 
 ### Image Encryption
-Encrypt an image file with optional compression:
+Encrypt an image with smart compression:
 ```bash
-imagecrypt -e -i input.jpg -o encrypted.bin -k "your-secret-key"
+pixelcrypt -e -i input.jpg -o encrypted.bin -k "your-secret-key"
 ```
 
 ### Image Decryption
-Decrypt a previously encrypted file:
+Decrypt an encrypted file:
 ```bash
-imagecrypt -d -i encrypted.bin -o decrypted.jpg -k "your-secret-key"
+pixelcrypt -d -i encrypted.bin -o decrypted.jpg -k "your-secret-key"
 ```
 
 ### Available Options
@@ -56,64 +56,46 @@ Options
   -i, --input      Path to input image
   -o, --output     Save encrypted/decrypted image to
   -k, --key        Secret key for encryption/decryption
-  -c, --compress   Enable compression (default: true)
+  -c, --compress   Enable smart compression for files >10KB (default: true)
 ```
 
 ## Technical Implementation🔐
-The project implements several key features:
+Key technical features:
+
+### Smart Compression Process
+```javascript
+const MIN_COMPRESS_SIZE = 10240; // 10KB minimum for compression
+
+async function encrypt({ input, output, key, compress }) {
+    // ...
+    if (compress && imageData.length > MIN_COMPRESS_SIZE) {
+        spinner.text = 'Compressing image...';
+        processedData = await gzip(imageData);
+        spinner.succeed('Compression complete!');
+        showStats(imageData.length, processedData.length);
+    } else if (compress) {
+        spinner.info('File too small for effective compression, skipping...');
+        compress = false;
+    }
+    // ...
+}
+```
 
 ### Encryption Process
 ```javascript
-async function encrypt({ input, output, key, compress }) {
-    const algorithm = 'aes-256-ctr';
-    const iv = crypto.randomBytes(16);
-    const cipher = crypto.createCipheriv(algorithm, key.padEnd(32).slice(0, 32), iv);
-    
-    // Read and optionally compress image data
-    const imageData = await readFile(input);
-    let processedData = compress ? await gzip(imageData) : imageData;
-    
-    // Encrypt and save
-    const encryptedImage = Buffer.concat([
-        iv,
-        Buffer.from([compress ? 1 : 0]),
-        cipher.update(processedData),
-        cipher.final()
-    ]);
-}
+const algorithm = 'aes-256-ctr';
+const iv = crypto.randomBytes(16);
+const cipher = crypto.createCipheriv(algorithm, key.padEnd(32).slice(0, 32), iv);
+
+const encryptedImage = Buffer.concat([
+    iv,
+    Buffer.from([compress ? 1 : 0]),
+    cipher.update(processedData),
+    cipher.final()
+]);
 ```
 
-### Decryption Process
-```javascript
-async function decrypt({ input, output, key }) {
-    const algorithm = 'aes-256-ctr';
-    const encryptedData = await readFile(input);
-    
-    // Extract IV and compression flag
-    const iv = encryptedData.slice(0, 16);
-    const isCompressed = encryptedData[16] === 1;
-    const imageData = encryptedData.slice(17);
-    
-    // Decrypt and decompress if needed
-    const decipher = crypto.createDecipheriv(algorithm, key.padEnd(32).slice(0, 32), iv);
-    let decryptedImage = Buffer.concat([decipher.update(imageData), decipher.final()]);
-    
-    if (isCompressed) {
-        decryptedImage = await gunzip(decryptedImage);
-    }
-}
-```
-
-### Progress Tracking
-The tool uses Ora for elegant progress display:
-```javascript
-const spinner = ora('Starting encryption process...').start();
-spinner.text = 'Encrypting data...';
-spinner.succeed('Image encrypted successfully! 🎉');
-```
-
-### Compression Statistics
-Shows compression effectiveness:
+### Statistics Display
 ```javascript
 function showStats(originalSize, compressedSize) {
     const ratio = ((1 - compressedSize / originalSize) * 100).toFixed(2);
@@ -127,9 +109,9 @@ function showStats(originalSize, compressedSize) {
 
 ## Examples📌
 
-### Example 1: Basic Encryption
+### Example 1: Large File Encryption (>10KB)
 ```bash
-imagecrypt -e -i photo.jpg -o encrypted.bin -k "mysecretkey123"
+pixelcrypt -e -i large-photo.jpg -o encrypted.bin -k "mysecretkey123"
 ```
 Output:
 ```
@@ -149,9 +131,25 @@ Saving encrypted file...
 ✔ Image encrypted successfully! 🎉
 ```
 
-### Example 2: Decryption with Compressed Data
+### Example 2: Small File Encryption (<10KB)
 ```bash
-imagecrypt -d -i encrypted.bin -o decrypted.jpg -k "mysecretkey123"
+pixelcrypt -e -i icon.png -o encrypted.bin -k "mysecretkey123"
+```
+Output:
+```
+🔒 Pixel Crypt Engine
+
+Starting encryption process...
+Reading image file...
+ℹ File too small for effective compression, skipping...
+Encrypting data...
+Saving encrypted file...
+✔ Image encrypted successfully! 🎉
+```
+
+### Example 3: Decryption
+```bash
+pixelcrypt -d -i encrypted.bin -o decrypted.jpg -k "mysecretkey123"
 ```
 Output:
 ```
@@ -164,34 +162,16 @@ Decompressing data...
 ✔ Decompression complete!
 ┌─────────────────────────────────┐
 │ 📊 Original size: 892.30 KB     │
-│ 📉 Compressed size: 1024.50 KB  │
-│ 💪 Compression ratio: -12.90%   │
+│ 📉 Final size: 1024.50 KB       │
 └─────────────────────────────────┘
 Saving decrypted image...
 ✔ Image decrypted successfully! 🎉
 ```
 
-### Example 3: Encryption without Compression
-```bash
-imagecrypt -e -i photo.jpg -o encrypted.bin -k "mysecretkey123" --no-compress
-```
-Output:
-```
-🔒 Pixel Crypt Engine
-
-Starting encryption process...
-Reading image file...
-Encrypting data...
-Saving encrypted file...
-✔ Image encrypted successfully! 🎉
-```
-
-Note: The tool includes several features for enhanced functionality:
-- AES-256-CTR encryption for security
-- GZIP compression for reduced file sizes
-- Progress indicators with spinners
-- Compression statistics display
-- Error handling with informative messages
-- Command-line help documentation
-
-These features make the tool efficient for secure image storage and transfer while maintaining a focus on user experience and security.
+Key Features:
+- AES-256-CTR encryption
+- Smart compression (>10KB files only)
+- Progress tracking with spinners
+- Detailed statistics
+- Comprehensive error handling
+- User-friendly CLI interface

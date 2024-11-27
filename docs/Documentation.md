@@ -34,13 +34,13 @@ The engine provides two main operations:
 ### Image Encryption
 Encrypt an image with smart compression:
 ```bash
-pixelcrypt -e -i input.jpg -o encrypted.bin -k "your-secret-key"
+node index.js -e -i input.jpg -o encrypted.bin -k "your-secret-key"
 ```
 
 ### Image Decryption
 Decrypt an encrypted file:
 ```bash
-pixelcrypt -d -i encrypted.bin -o decrypted.jpg -k "your-secret-key"
+node index.js -d -i encrypted.bin -o decrypted.jpg -k "your-secret-key"
 ```
 
 ### Available Options
@@ -106,7 +106,7 @@ function showStats(originalSize, compressedSize) {
 
 ### Example 1: Large File Encryption (>10KB)
 ```bash
-pixelcrypt -e -i input.jpg -o encrypted.bin -k "mysecretkey123"
+node index.js -e -i input.jpg -o encrypted.bin -k "mysecretkey123"
 ```
 Output:
 ```
@@ -128,7 +128,7 @@ Saving encrypted file...
 
 ### Example 2: Small File Encryption (<10KB)
 ```bash
-pixelcrypt -e -i input.png -o encrypted.bin -k "mysecretkey123"
+node index.js -e -i input.png -o encrypted.bin -k "mysecretkey123"
 ```
 Output:
 ```
@@ -144,7 +144,7 @@ Saving encrypted file...
 
 ### Example 3: Decryption
 ```bash
-pixelcrypt -d -i encrypted.bin -o decrypted.jpg -k "mysecretkey123"
+node index.js -d -i encrypted.bin -o decrypted.jpg -k "mysecretkey123"
 ```
 Output:
 ```

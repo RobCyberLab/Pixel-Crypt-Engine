@@ -108,60 +108,34 @@ function showStats(originalSize, compressedSize) {
 ```bash
 node index.js -e -i input.jpg -o encrypted.bin -k "mysecretkey123"
 ```
-Output:
-```
-🔒 Pixel Crypt Engine
 
-Starting encryption process...
-Reading image file...
-Compressing image...
-✔ Compression complete!
-┌─────────────────────────────────┐
-│ 📊 Original size: 1024.50 KB    │
-│ 📉 Compressed size: 892.30 KB   │
-│ 💪 Compression ratio: 12.90%    │
-└─────────────────────────────────┘
-Encrypting data...
-Saving encrypted file...
-✔ Image encrypted successfully! 🎉
-```
+<p align="center">
+  <img src="ex2.png" alt=" " width="500">
+  <br>
+  <em>Large File Encryption (>10KB)</em>
+</p>
 
 ### Example 2: Small File Encryption (<10KB)
 ```bash
 node index.js -e -i input.png -o encrypted.bin -k "mysecretkey123"
 ```
-Output:
-```
-🔒 Pixel Crypt Engine
 
-Starting encryption process...
-Reading image file...
-ℹ File too small for effective compression, skipping...
-Encrypting data...
-Saving encrypted file...
-✔ Image encrypted successfully! 🎉
-```
+<p align="center">
+  <img src="ex1.png" alt=" " width="500">
+  <br>
+  <em>Small File Encryption</em>
+</p>
 
 ### Example 3: Decryption
 ```bash
 node index.js -d -i encrypted.bin -o decrypted.jpg -k "mysecretkey123"
 ```
-Output:
-```
-🔒 Pixel Crypt Engine
 
-Starting decryption process...
-Reading encrypted file...
-Decrypting data...
-Decompressing data...
-✔ Decompression complete!
-┌─────────────────────────────────┐
-│ 📊 Original size: 892.30 KB     │
-│ 📉 Final size: 1024.50 KB       │
-└─────────────────────────────────┘
-Saving decrypted image...
-✔ Image decrypted successfully! 🎉
-```
+<p align="center">
+  <img src="ex3.png" alt=" " width="500">
+  <br>
+  <em>Decryption</em>
+</p>
 
 Key Features:
 - AES-256-CTR encryption

@@ -15,20 +15,15 @@ To install and use Pixel Crypt Engine:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/pixel-crypt-engine.git
+git clone https://github.com/RobCyberLab/pixel-crypt-engine.git
 ```
 
-2. Navigate to directory:
-```bash
-cd pixel-crypt-engine
-```
-
-3. Install dependencies:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-4. Make CLI executable:
+3. Make CLI executable:
 ```bash
 chmod +x index.js
 ```

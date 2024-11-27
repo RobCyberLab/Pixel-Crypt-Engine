@@ -110,7 +110,7 @@ node index.js -e -i input.jpg -o encrypted.bin -k "mysecretkey123"
 ```
 
 <p align="center">
-  <img src="ex2.png" alt=" " width="500">
+  <img src="ex2.png" alt=" " width="800">
   <br>
   <em>Large File Encryption (>10KB)</em>
 </p>
@@ -121,7 +121,7 @@ node index.js -e -i input.png -o encrypted.bin -k "mysecretkey123"
 ```
 
 <p align="center">
-  <img src="ex1.png" alt=" " width="500">
+  <img src="ex1.png" alt=" " width="800">
   <br>
   <em>Small File Encryption</em>
 </p>
@@ -132,7 +132,7 @@ node index.js -d -i encrypted.bin -o decrypted.jpg -k "mysecretkey123"
 ```
 
 <p align="center">
-  <img src="ex3.png" alt=" " width="500">
+  <img src="ex3.png" alt=" " width="800">
   <br>
   <em>Decryption</em>
 </p>
